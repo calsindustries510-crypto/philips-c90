@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Philips DigitalDiagnost C90 – Test Report Workbench</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef2f5;--sf:#fff;--tx:#14232e;--mu:#5b6b78;--bd:#cfd8df;--ac:#0b5cab;--acx:#fff;--bad:#b3261e;--ok:#1b7a43;--wn:#8a5a00;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a22;--sf:#16252f;--tx:#e6edf2;--mu:#9bacb8;--bd:#2c3f4c;--ac:#5aa7f0;--acx:#07151f;--bad:#ff8a80;--ok:#6fd49a;--wn:#f0c060}}
+:root[data-theme="dark"]{--bg:#0e1a22;--sf:#16252f;--tx:#e6edf2;--mu:#9bacb8;--bd:#2c3f4c;--ac:#5aa7f0;--acx:#07151f;--bad:#ff8a80;--ok:#6fd49a;--wn:#f0c060}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 "Source Sans 3",system-ui,sans-serif}
+header{background:var(--sf);border-bottom:1px solid var(--bd);padding:14px 20px}
+header h1{margin:0;font-size:1.25rem;font-weight:700}header p{margin:2px 0 0;color:var(--mu);font-size:.9rem}
+nav{display:flex;gap:4px;overflow-x:auto;padding:8px 20px;background:var(--sf);border-bottom:1px solid var(--bd);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+nav button{border:0;background:none;color:var(--mu);font:600 .95rem inherit;font-family:inherit;padding:8px 12px;border-radius:6px;cursor:pointer;white-space:nowrap}
+nav button[aria-selected=true]{background:var(--ac);color:var(--acx)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+main{max-width:1000px;margin:0 auto;padding:20px}
+.panel{display:none}.panel.on{display:block}
+fieldset{border:1px solid var(--bd);background:var(--sf);border-radius:8px;margin:0 0 16px;padding:14px 16px}
+legend{font-weight:700;padding:0 6px}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+label{display:flex;flex-direction:column;font-size:.85rem;color:var(--mu);gap:3px}
+input,select,textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:7px 9px;width:100%}
+textarea{min-height:70px;resize:vertical}
+.w{grid-column:1/-1}
+.b{font:600 .9rem inherit;font-family:inherit;border:1px solid var(--ac);background:var(--ac);color:var(--acx);border-radius:6px;padding:7px 14px;cursor:pointer}
+.b.s{background:none;color:var(--ac)}.b.d{background:none;color:var(--bad);border-color:var(--bad)}
+.note{color:var(--mu);font-size:.88rem;margin:0 0 12px}
+.ov{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{border:1px solid var(--bd);padding:5px 8px;text-align:left;vertical-align:top}th{background:var(--bg)}
+.tag{font-weight:700}.Pass{color:var(--ok)}.Fail{color:var(--bad)}.Not{color:var(--wn)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.warn{border-left:4px solid var(--wn);background:var(--sf);padding:10px 14px;margin:0 0 16px;border-radius:0 6px 6px 0}
+#rep{background:#fff;color:#111;font:11pt/1.45 "Source Serif 4",Georgia,serif;padding:28px;border:1px solid var(--bd);border-radius:4px}
+#rep h1{font-size:1.35rem;text-align:center;margin:0 0 4px;line-height:1.25}#rep h2{font-size:1.05rem;margin:18px 0 6px;border-bottom:1px solid #999}
+#rep table{font-size:.8rem}#rep th,#rep td{border-color:#999}#rep th{background:#eee;color:#111}
+#rep .Pass{color:#116b36}#rep .Fail{color:#a00}#rep .Not{color:#7a5000}
+.disc{border:1px solid #111;padding:8px 10px;font-size:.85rem;margin-top:14px}
+@media print{body{background:#fff}header,nav,.np,.panel:not(#p-rep){display:none!important}#p-rep{display:block!important}main{padding:0;max-width:none}#rep{border:0;padding:0}}
+</style></head><body>
+<header><h1>Philips DigitalDiagnost C90 – test report workbench</h1>
+<p>Technical documentation support for IEC 60601 testing. Laboratory-defined methods and limits only.</p></header>
+<nav role="tablist" id="nav"></nav>
+<main id="main"></main>
+<script>
+const $=s=>document.querySelector(s),KEY="c90wb1";
+const SECS=[["A","Equipment identification"],["B","Electrical safety assessment"],["C","Radiation protection assessment"],["D","X-ray output and performance assessment"],["E","Image acquisition and detector assessment"],["F","Mechanical safety assessment"],["G","Electromagnetic compatibility"],["H","Essential performance"],["I","Risk-related observations"],["J","Final engineering review"]];
+const STDS=[["IEC 60601-1","Medical electrical equipment – general requirements for basic safety and essential performance"],["IEC 60601-1-2","Collateral standard: electromagnetic disturbances"],["IEC 60601-1-3","Collateral standard: radiation protection in diagnostic X-ray equipment"],["IEC 60601-1-6","Collateral standard: usability"],["IEC 60601-2-28","Particular requirements: X-ray tube assemblies for medical diagnosis"],["IEC 60601-2-54","Particular requirements: X-ray equipment for radiography and radioscopy"],["IEC 60522-1","As designated in the laboratory’s authorized reference"]];
+const MT=["Tube voltage","Tube current","Exposure time","Radiation output","Beam quality","Half-value layer","Radiation field alignment","Radiation reproducibility","Radiation output linearity","Indicated vs measured exposure parameters","Dose-related measurement","Detector / image-quality measurement"];
+const EQF=[["manufacturer","Manufacturer",1],["device","Device name",1],["category","Equipment category",1],["application","Intended application",1],["model","Exact model and configuration"],["serial","Serial number"],["year","Manufacturing year"],["software","Software version"],["generator","X-ray generator details"],["tubeMake","X-ray tube manufacturer"],["tubeModel","X-ray tube model"],["detType","Detector type"],["detModel","Detector model"],["workstation","Workstation details"],["accessories","Installed accessories"],["hardware","Hardware configuration"]];
+const LABF=[["labName","Laboratory name"],["labId","Accreditation / ID"],["labAddr","Address"],["client","Client / site"],["reportNo","Report number"],["dateFrom","Test start date","date"],["dateTo","Test end date","date"]];
+const MF=[["type","Measurement type","sel"],["testId","Test identification"],["method","Test method reference"],["clause","Applicable clause"],["equip","Measurement equipment"],["cal","Calibration details"],["setv","Set value"],["meas","Actual measured value"],["unit","Unit"],["unc","Measurement uncertainty"],["crit","Acceptance criteria"],["result","Result","res"],["evid","Supporting evidence (reference / file name)","w"]];
+const RES=["Not assessed","Pass","Fail","Information only"];
+let S={lab:{},eq:{manufacturer:"Philips",device:"DigitalDiagnost C90",category:"Stationary Digital Radiography System",application:"General diagnostic radiography"},stds:STDS.map(s=>({id:s[0],title:s[1],ed:"",am:"",nat:"",cl:"",ap:"Not yet assessed",basis:""})),sec:{},meas:[],dev:[],rv:{},parsed:[]};
+SECS.forEach(s=>S.sec[s[0]]={inc:true,st:"Not started",n:""});
+try{const j=localStorage.getItem(KEY);if(j){const o=JSON.parse(j);S=Object.assign(S,o)}}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const inp=(o,k,l,t,extra="")=>`<label class="${extra}">${l}<input type="${t||"text"}" data-o="${o}" data-k="${k}" value="${esc(S[o][k]||"")}"></label>`;
+const TABS=[["lab","Laboratory"],["eq","Equipment"],["std","Standards"],["sec","Report sections"],["meas","Measurements"],["raw","Raw data"],["dev","Deviations & review"],["rep","Report"]];
+let cur="lab",edit=-1;
+function nav(){$("#nav").innerHTML=TABS.map(t=>`<button role="tab" aria-selected="${t[0]==cur}" onclick="go('${t[0]}')">${t[1]}</button>`).join("")}
+function go(t){cur=t;nav();render();window.scrollTo(0,0)}
+function render(){const m=$("#main");
+if(cur=="lab")m.innerHTML=`<fieldset><legend>Laboratory and report identification</legend><div class="g">${LABF.map(f=>inp("lab",f[0],f[1],f[2])).join("")}</div></fieldset>`;
+if(cur=="eq")m.innerHTML=`<p class="note">Manufacturer, device, category and application are prepopulated for the C90 but remain editable. Hardware and accessories vary between installations; record only what is verified on site.</p><fieldset><legend>Equipment profile</legend><div class="g">${EQF.map(f=>inp("eq",f[0],f[1]+(f[2]?" (default)":""),"text",["accessories","hardware","generator","workstation"].includes(f[0])?"w":"")).join("")}</div></fieldset>`;
+if(cur=="std")m.innerHTML=`<p class="note">Applicability is established from the manufacturer’s documentation and the laboratory’s authorized standards references. Nothing is assumed to apply by default.</p>`+S.stds.map((s,i)=>`<fieldset><legend>${esc(s.id)}</legend><p class="note">${esc(s.title)}</p><div class="g">
+<label>Edition / year<input data-s="${i}" data-k="ed" value="${esc(s.ed)}"></label><label>Amendments<input data-s="${i}" data-k="am" value="${esc(s.am)}"></label><label>National adoption<input data-s="${i}" data-k="nat" value="${esc(s.nat)}"></label>
+<label>Applicability<select data-s="${i}" data-k="ap">${["Not yet assessed","Applicable","Partially applicable","Not applicable"].map(o=>`<option${o==s.ap?" selected":""}>${o}</option>`).join("")}</select></label>
+<label class="w">Applicable clauses<input data-s="${i}" data-k="cl" value="${esc(s.cl)}"></label><label class="w">Basis for applicability<input data-s="${i}" data-k="basis" value="${esc(s.basis)}"></label></div></fieldset>`).join("")+`<button class="b s" onclick="addStd()">Add standard</button>`;
+if(cur=="sec")m.innerHTML=SECS.map(s=>{const v=S.sec[s[0]];return`<fieldset><legend>${s[0]}. ${s[1]}</legend><div class="g"><label>Status<select data-c="${s[0]}" data-k="st">${["Not started","In progress","Complete","Not applicable"].map(o=>`<option${o==v.st?" selected":""}>${o}</option>`).join("")}</select></label><label>Include in report<select data-c="${s[0]}" data-k="inc"><option value="1"${v.inc?" selected":""}>Yes</option><option value="0"${v.inc?"":" selected"}>No</option></select></label><label class="w">Findings and notes<textarea data-c="${s[0]}" data-k="n">${esc(v.n)}</textarea></label></div></fieldset>`}).join("");
+if(cur=="meas")mMeas();
+if(cur=="raw")m.innerHTML=`<p class="note">Paste instrument output or notes. Terms such as kVp, mA, mAs, ms, HVL, Detector, AEC, SID, Radiation output, Exposure index, Deviation index and DAP/KAP are recognized. Values and units are kept exactly as written: nothing is converted or rounded.</p><textarea id="raw" style="min-height:160px" placeholder="kVp: 80.2 kV&#10;Time: 100 ms&#10;Radiation output = 38.4 µGy/mAs&#10;Exposure index: 412&#10;DAP 12,5 cGy·cm²">${esc(S.rawText||"")}</textarea><div class="row"><button class="b" onclick="doParse()">Parse</button></div><div id="pr" class="ov"></div>`,doParse(1);
+if(cur=="dev")m.innerHTML=`<fieldset><legend>Recorded deviations</legend><p class="note">Measurements with result “Fail” appear in the report automatically. Add other deviations here.</p>${S.dev.map((d,i)=>`<div class="row"><input style="flex:1" data-d="${i}" value="${esc(d)}"><button class="b d" onclick="S.dev.splice(${i},1);save();render()">Remove</button></div>`).join("")}<div class="row"><button class="b s" onclick="S.dev.push('');save();render()">Add deviation</button></div></fieldset>
+<fieldset><legend>Reviewer approval and final assessment</legend><div class="g">${inp("rv","tester","Tested by")}${inp("rv","reviewer","Reviewer name")}${inp("rv","role","Reviewer role / qualification")}${inp("rv","date","Review date","date")}<label>Review decision<select data-o="rv" data-k="decision">${["Pending","Approved","Approved with observations","Not approved"].map(o=>`<option${o==S.rv.decision?" selected":""}>${o}</option>`).join("")}</select></label>${inp("rv","sig","Signature / authorization reference")}<label class="w">Final engineering assessment<textarea data-o="rv" data-k="assess">${esc(S.rv.assess||"")}</textarea></label></div></fieldset>`;
+if(cur=="rep")mRep()}
+function mMeas(){const m=$("#main"),e=edit>=0?S.meas[edit]:{};
+m.innerHTML=`<p class="note">These are data categories only. Enter the method, limits and uncertainty supplied by your laboratory.</p><fieldset><legend>${edit>=0?"Edit measurement":"New measurement"}</legend><form onsubmit="return false"><div class="g" id="mf">${MF.map(f=>{const v=e[f[0]]??(f[0]=="result"?"Not assessed":"");if(f[2]=="sel")return`<label>${f[1]}<select name="type">${MT.map(o=>`<option${o==v?" selected":""}>${o}</option>`).join("")}</select></label>`;if(f[2]=="res")return`<label>${f[1]}<select name="result">${RES.map(o=>`<option${o==v?" selected":""}>${o}</option>`).join("")}</select></label>`;return`<label class="${f[2]=="w"?"w":""}">${f[1]}<input name="${f[0]}" value="${esc(v)}"></label>`}).join("")}</div><div class="row"><button class="b" onclick="saveM()">${edit>=0?"Update":"Add measurement"}</button>${edit>=0?`<button class="b s" onclick="edit=-1;render()">Cancel</button>`:""}</div></form></fieldset>
+<div class="ov"><table><tr><th>Type</th><th>Test ID</th><th>Set</th><th>Measured</th><th>Unit</th><th>Uncertainty</th><th>Criteria</th><th>Result</th><th></th></tr>${S.meas.map((r,i)=>`<tr><td>${esc(r.type)}</td><td>${esc(r.testId)}</td><td>${esc(r.setv)}</td><td>${esc(r.meas)}</td><td>${esc(r.unit)}</td><td>${esc(r.unc)}</td><td>${esc(r.crit)}</td><td class="tag ${rc(r.result)}">${esc(r.result)}</td><td><button class="b s" onclick="edit=${i};render();window.scrollTo(0,0)">Edit</button> <button class="b d" onclick="S.meas.splice(${i},1);save();render()">Delete</button></td></tr>`).join("")||`<tr><td colspan="9">No measurements yet. Add one above or import from raw data.</td></tr>`}</table></div>`}
+const rc=r=>r=="Pass"?"Pass":r=="Fail"?"Fail":"Not";
+function saveM(){const o={};document.querySelectorAll("#mf [name]").forEach(x=>o[x.name]=x.value);if(edit>=0)S.meas[edit]=o;else S.meas.push(o);edit=-1;save();render()}
+function addStd(){S.stds.push({id:"New standard",title:"",ed:"",am:"",nat:"",cl:"",ap:"Not yet assessed",basis:""});save();render()}
+/* raw-data parser: values and units are kept as the original text */
+const UNITS="kVp|kV|mAs|mA|ms";
+const LAB="Radiation output|Exposure index|Deviation index|kVp|mAs|mA|ms|HVL|SID|AEC|Detector|DAP|KAP|EI|DI";
+const NUM="[-+]?\\d[\\d.,]*(?:[eE][-+]?\\d+)?";
+function parseText(t){const out=[];t.split(/\r?\n/).forEach((ln,i)=>{if(!ln.trim())return;let used=[];
+const rl=new RegExp("\\b("+LAB+")\\b\\s*[:=]\\s*(.*)","gi");let m;
+while((m=rl.exec(ln))){const term=m[1],rest=m[2].split(/[;\t]|,\s(?=[A-Za-z])/)[0].trim();used.push([m.index,m.index+m[0].length]);
+if(/^(Detector|AEC)$/i.test(term)){out.push({ln:i+1,term:norm(term),val:rest,unit:"",raw:ln.trim()});continue}
+const n=rest.match(new RegExp("^("+NUM+")\\s*(\\S*)"));if(n)out.push({ln:i+1,term:norm(term),val:n[1],unit:n[2].replace(/[;,]$/,""),raw:ln.trim()});else out.push({ln:i+1,term:norm(term),val:rest,unit:"",raw:ln.trim()})}
+const ru=new RegExp("("+NUM+")\\s*("+UNITS+")\\b","g");
+while((m=ru.exec(ln))){if(used.some(u=>m.index>=u[0]&&m.index<u[1]))continue;out.push({ln:i+1,term:norm(m[2]),val:m[1],unit:m[2],raw:ln.trim()})}
+const rd=new RegExp("\\b(DAP|KAP)\\b\\s+("+NUM+")\\s*(\\S*)","gi");
+while((m=rd.exec(ln))){if(used.some(u=>m.index>=u[0]&&m.index<u[1]))continue;out.push({ln:i+1,term:norm(m[1]),val:m[2],unit:m[3],raw:ln.trim()})}
+});return out}
+function norm(t){const l=t.toLowerCase();const M={kvp:"kVp",kv:"kV",mas:"mAs",ma:"mA",ms:"ms",hvl:"HVL",sid:"SID",aec:"AEC",detector:"Detector",dap:"DAP",kap:"KAP",ei:"Exposure index",di:"Deviation index","radiation output":"Radiation output","exposure index":"Exposure index","deviation index":"Deviation index"};return M[l]||t}
+const T2M={kVp:"Tube voltage",kV:"Tube voltage",mA:"Tube current",mAs:"Tube current",ms:"Exposure time","Radiation output":"Radiation output",HVL:"Half-value layer",DAP:"Dose-related measurement",KAP:"Dose-related measurement",Detector:"Detector / image-quality measurement","Exposure index":"Detector / image-quality measurement","Deviation index":"Detector / image-quality measurement",AEC:"Indicated vs measured exposure parameters",SID:"Indicated vs measured exposure parameters"};
+function doParse(init){const ta=$("#raw");if(!init&&ta){S.rawText=ta.value;S.parsed=parseText(ta.value);save()}
+$("#pr").innerHTML=S.parsed.length?`<table><tr><th>Line</th><th>Term</th><th>Value (as written)</th><th>Unit (as written)</th><th>Source line</th><th></th></tr>${S.parsed.map((p,i)=>`<tr><td>${p.ln}</td><td>${esc(p.term)}</td><td>${esc(p.val)}</td><td>${esc(p.unit)}</td><td>${esc(p.raw)}</td><td><button class="b s" onclick="imp(${i})">Add as measurement</button></td></tr>`).join("")}</table>`:(init?"":"<p class='note'>No recognized terms found.</p>")}
+function imp(i){const p=S.parsed[i];S.meas.push({type:T2M[p.term]||MT[0],testId:"Imported: "+p.term+" (line "+p.ln+")",method:"",clause:"",equip:"",cal:"",setv:"",meas:p.val,unit:p.unit,unc:"",crit:"",result:"Not assessed",evid:"Raw data line "+p.ln+": "+p.raw});save();go("meas")}
+function mRep(){const L=S.lab,E=S.eq,R=S.rv,f=v=>esc(v)||"–";
+const fails=S.meas.filter(x=>x.result=="Fail"),cnt=r=>S.meas.filter(x=>x.result==r).length;
+const devs=[...fails.map(x=>`${x.type} – ${x.testId||"unidentified test"}: measured ${x.meas||"–"} ${x.unit||""}; criteria: ${x.crit||"–"}`),...S.dev.filter(Boolean)];
+const kv=(a,o)=>`<table>${a.map(x=>`<tr><th style="width:34%">${x[1]}</th><td>${f(o[x[0]])}</td></tr>`).join("")}</table>`;
+$("#main").innerHTML=`<div class="row np" style="margin:0 0 12px"><button class="b" onclick="window.print()">Print or save as PDF</button><span class="note" style="margin:0">Complete all tabs first; this preview updates from your data.</span></div>
+<div id="rep"><h1>PHILIPS DIGITALDIAGNOST C90<br>IEC 60601 COMPLIANCE TEST REPORT</h1>
+<h2>Laboratory and report identification</h2><table><tr><th>Laboratory</th><td>${f(L.labName)}</td><th>Accreditation / ID</th><td>${f(L.labId)}</td></tr><tr><th>Address</th><td>${f(L.labAddr)}</td><th>Client / site</th><td>${f(L.client)}</td></tr><tr><th>Report number</th><td>${f(L.reportNo)}</td><th>Test dates</th><td>${f(L.dateFrom)} to ${f(L.dateTo)}</td></tr></table>
+<h2>Equipment identification</h2>${kv(EQF,E)}
+<h2>Applicable standards and editions</h2><table><tr><th>Standard</th><th>Edition</th><th>Amendments</th><th>National adoption</th><th>Applicability</th><th>Clauses</th></tr>${S.stds.map(s=>`<tr><td>${esc(s.id)}</td><td>${f(s.ed)}</td><td>${f(s.am)}</td><td>${f(s.nat)}</td><td>${esc(s.ap)}</td><td>${f(s.cl)}</td></tr>`).join("")}</table>
+<h2>Measurement summary</h2><p>Total ${S.meas.length}; Pass ${cnt("Pass")}; Fail ${cnt("Fail")}; Not assessed ${cnt("Not assessed")}; Information only ${cnt("Information only")}.</p>
+<table><tr><th>Type</th><th>Test ID / method / clause</th><th>Equipment / calibration</th><th>Set</th><th>Measured</th><th>Unit</th><th>Uncertainty</th><th>Criteria</th></tr>${S.meas.map(x=>`<tr><td>${esc(x.type)}</td><td>${f(x.testId)}<br>${f(x.method)}<br>${f(x.clause)}</td><td>${f(x.equip)}<br>${f(x.cal)}</td><td>${f(x.setv)}</td><td>${f(x.meas)}</td><td>${f(x.unit)}</td><td>${f(x.unc)}</td><td>${f(x.crit)}</td></tr>`).join("")||"<tr><td colspan='8'>No measurements recorded.</td></tr>"}</table>
+<h2>Test results</h2><table><tr><th>Test</th><th>Result</th><th>Supporting evidence</th></tr>${S.meas.map(x=>`<tr><td>${esc(x.type)} – ${f(x.testId)}</td><td class="tag ${rc(x.result)}">${esc(x.result)}</td><td>${f(x.evid)}</td></tr>`).join("")||"<tr><td colspan='3'>–</td></tr>"}</table>
+${SECS.filter(s=>S.sec[s[0]].inc&&s[0]!="A"&&s[0]!="J").map(s=>`<h2>${s[0]}. ${s[1]}</h2><p><b>Status:</b> ${esc(S.sec[s[0]].st)}</p><p>${f(S.sec[s[0]].n).replace(/\n/g,"<br>")}</p>`).join("")}
+<h2>Deviations</h2>${devs.length?"<ul>"+devs.map(d=>`<li>${esc(d)}</li>`).join("")+"</ul>":"<p>None recorded.</p>"}
+<h2>J. Final engineering review</h2><table><tr><th style="width:34%">Tested by</th><td>${f(R.tester)}</td></tr><tr><th>Reviewer</th><td>${f(R.reviewer)} ${R.role?"("+esc(R.role)+")":""}</td></tr><tr><th>Review date</th><td>${f(R.date)}</td></tr><tr><th>Decision</th><td>${esc(R.decision||"Pending")}</td></tr><tr><th>Signature / authorization</th><td>${f(R.sig)}</td></tr></table>
+<h2>Final engineering assessment</h2><p>${f(R.assess).replace(/\n/g,"<br>")}</p>
+<div class="disc"><b>Disclaimer.</b> This application assists with technical documentation. It does not independently certify equipment conformity. Conformity decisions rest with the qualified laboratory and reviewer named in this report, using the laboratory’s approved methods and acceptance criteria.</div></div>`}
+document.addEventListener("input",e=>{const t=e.target,d=t.dataset;if(d.o){S[d.o][d.k]=t.value}else if(d.s!==undefined){S.stds[d.s][d.k]=t.value}else if(d.c){S.sec[d.c][d.k]=d.k=="inc"?t.value=="1":t.value}else if(d.d!==undefined){S.dev[d.d]=t.value}else return;save()});
+nav();render();
+</script></body></html>
